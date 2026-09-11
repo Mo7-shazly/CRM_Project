@@ -1,0 +1,16 @@
+# Visual Studio user state
+.vs/
+*.user
+*.suo
+
+# Build outputs and IDE-generated temporary project files
+**/bin/
+**/obj/
+obj-check/
+*_wpftmp.csproj
+
+# Working files used to generate deliverables
+tmp/
+
+# Local SQLite development database
+*.db

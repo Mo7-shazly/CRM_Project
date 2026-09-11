@@ -1,0 +1,79 @@
+<UserControl x:Class="CRM.Desktop.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28,25">
+            <TextBlock Text="Settings" FontSize="28" FontWeight="Bold" Foreground="#18283C"/>
+            <TextBlock Text="Manage your company preferences and team access" Foreground="#77849A" Margin="0,3,0,20"/>
+
+            <Border Background="White" Padding="20" MaxWidth="620" HorizontalAlignment="Left">
+                <StackPanel>
+                    <TextBlock Text="Company preferences" FontSize="17" FontWeight="SemiBold"/>
+                    <TextBlock Text="Company name" Margin="0,16,0,5"/>
+                    <TextBox Text="{Binding CompanyName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Currency" Margin="0,14,0,5"/>
+                    <TextBox Text="{Binding Currency, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{Binding SaveMessage}" Foreground="#238636" Margin="0,12,0,0"/>
+                    <Button Content="Save settings" Command="{Binding SaveCommand}" Background="#1677C8" Foreground="White" HorizontalAlignment="Left" Padding="16,8" Margin="0,12,0,0" BorderThickness="0"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Visibility="{Binding CanManageUsers, Converter={StaticResource BoolToVisibility}}" Margin="0,25,0,0">
+                <TextBlock Text="User management" FontSize="20" FontWeight="SemiBold" Foreground="#18283C"/>
+                <Grid Margin="0,12,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Background="White" Padding="18" Margin="0,0,12,0">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <TextBlock Text="Users" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <Button Content="Refresh" Command="{Binding RefreshUsersCommand}" Margin="12,0,0,0"/>
+                            </StackPanel>
+                            <DataGrid ItemsSource="{Binding Users}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" MinHeight="200">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" Width="*"/>
+                                    <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="90"/>
+                                    <DataGridTemplateColumn Header="">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Edit" Command="{Binding DataContext.EditUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="1" Background="White" Padding="18">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="User details" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <Button Content="New user" Command="{Binding NewUserCommand}" Margin="12,0,0,0"/>
+                            </StackPanel>
+                            <TextBlock Text="Name" Margin="0,16,0,5"/>
+                            <TextBox Text="{Binding Editor.DisplayName, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Email" Margin="0,12,0,5"/>
+                            <TextBox Text="{Binding Editor.Email, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Grid Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,8,0">
+                                    <TextBlock Text="Role" Margin="0,0,0,5"/>
+                                    <ComboBox ItemsSource="{Binding Roles}" SelectedItem="{Binding Editor.Role}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="New password" Margin="0,0,0,5"/>
+                                    <TextBox Text="{Binding NewPassword, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </Grid>
+                            <CheckBox Content="Active user" IsChecked="{Binding Editor.IsActive}" Margin="0,12,0,0"/>
+                            <TextBlock Text="{Binding UserError}" Foreground="#C83D3D" Margin="0,10,0,0"/>
+                            <Button Content="Save user" Command="{Binding SaveUserCommand}" Background="#1677C8" Foreground="White" HorizontalAlignment="Left" Padding="16,8" Margin="0,12,0,0" BorderThickness="0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
